@@ -1,6 +1,6 @@
 language: java
 script:
-  - ./gradlew build nativeImage
+  - ./gradlew build nativeImage -i
   - cp build/graal/make-jks build/make-jks-linux-x64
 deploy:
   provider: releases
