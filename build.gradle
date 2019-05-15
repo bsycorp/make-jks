@@ -1,0 +1,40 @@
+plugins {
+    id "com.palantir.graal" version "0.3.0-26-gca657c3"
+}
+apply plugin: 'java'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation "info.picocli:picocli:3.9.5"
+    implementation "commons-io:commons-io:2.6"
+    implementation "org.bouncycastle:bcprov-jdk15on:1.61"
+    implementation "org.bouncycastle:bcpkix-jdk15on:1.61"
+    implementation files("${org.gradle.internal.jvm.Jvm.current().javaHome}/jre/lib/rt.jar")
+}
+
+compileJava {
+    options.warnings = false
+    options.deprecation = false
+    options.compilerArgs += ["-XDignore.symbol.file=true"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
+graal {
+    mainClass 'com.bsycorp.makejks.Main'
+    outputName 'make-jks'
+    graalVersion '1.0.0-rc16'
+    option '--no-server'
+//    option '--initialize-at-build-time'
+    option '--no-fallback'
+    option '--enable-all-security-services'
+    option '-H:ReflectionConfigurationFiles=reflection-config.json'
+    option '--rerun-class-initialization-at-runtime=org.bouncycastle.crypto.prng.SP800SecureRandom'
+    option '--rerun-class-initialization-at-runtime=org.bouncycastle.jcajce.provider.drbg.DRBG$Default'
+    option '--rerun-class-initialization-at-runtime=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV'
+    option '-J-Djava.security.properties=java.security.overrides'
+}

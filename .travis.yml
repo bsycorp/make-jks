@@ -1,17 +1,14 @@
-language: go
-go:
-- 1.10.x
+language: java
 script:
-- make
+  - ./gradlew build nativeImage
+  - cp build/graal/make-jks build/make-jks-linux-x64
 deploy:
   provider: releases
   api_key:
-    secure: FljaLJTQW7hIk0EQY6jLpiEDWP9R14CXZuaDM0Ep9BhZlqf54Gh1nMVThbJOY1f9WhhCQHlcp1akffw1vuEbfeb6xV72tvLa88ypOwg1gD1WrXa+Uv1UvhKoSBzErSf3o8OIrAhAjnjTJJhWzRexbvui+iuYy6rpcJLo3muyTT+7jf9AXvlV9F2hq5wcEf23yDYY/ozXTYI7JLQaQVUhVeMJCVemrcA4MCxpJQWa+smQhZbhOHLVfOru1zbOttLsRda8K0uuF1KcXZmr5RvtEs2IWUMW5EajS2eT0v/rzYUnnae+LSgrBlclCivAyycKnmkn54WG6aeFqbuA3p2vZ5RsZr3VM2yCsozKyrOjGtdV0PYxu7Kw9LcfkmRIs4JqIoF0VRfvTUidsU6AQXlZxkGAulaBDX+D9cK51qQu3iFheFX3gvhRJFsAafRbJwrtNqB6Wxvd6yeUxehBVOoouHANfiRuGeu1ZYO+H46ijn8olemx5NVYzaRGyMf2eb4X0k0sfwKIQ5+30iCTjgN4j6n1i3pDj7rkZS7dxFRZyuP6Ieug/4oMUTh0nFDCoM9OMihtFrTxD6/XyGASsbRRFyuWKcfny5+InitImufVmzwbXwF48gfToz4uf6o1acgfHFh13vOuuVU7P1kMj1v64dkj05D1QXhXD1sEmD1Gjb8=
+    secure: secure: FljaLJTQW7hIk0EQY6jLpiEDWP9R14CXZuaDM0Ep9BhZlqf54Gh1nMVThbJOY1f9WhhCQHlcp1akffw1vuEbfeb6xV72tvLa88ypOwg1gD1WrXa+Uv1UvhKoSBzErSf3o8OIrAhAjnjTJJhWzRexbvui+iuYy6rpcJLo3muyTT+7jf9AXvlV9F2hq5wcEf23yDYY/ozXTYI7JLQaQVUhVeMJCVemrcA4MCxpJQWa+smQhZbhOHLVfOru1zbOttLsRda8K0uuF1KcXZmr5RvtEs2IWUMW5EajS2eT0v/rzYUnnae+LSgrBlclCivAyycKnmkn54WG6aeFqbuA3p2vZ5RsZr3VM2yCsozKyrOjGtdV0PYxu7Kw9LcfkmRIs4JqIoF0VRfvTUidsU6AQXlZxkGAulaBDX+D9cK51qQu3iFheFX3gvhRJFsAafRbJwrtNqB6Wxvd6yeUxehBVOoouHANfiRuGeu1ZYO+H46ijn8olemx5NVYzaRGyMf2eb4X0k0sfwKIQ5+30iCTjgN4j6n1i3pDj7rkZS7dxFRZyuP6Ieug/4oMUTh0nFDCoM9OMihtFrTxD6/XyGASsbRRFyuWKcfny5+InitImufVmzwbXwF48gfToz4uf6o1acgfHFh13vOuuVU7P1kMj1v64dkj05D1QXhXD1sEmD1Gjb8=
   skip_cleanup: true
   file:
-  - "build/make-jks-linux-x64"
-  - "build/make-jks-darwin-x64"
-  - "build/make-jks-win-x64.exe"
+    - "build/make-jks-linux-x64"
   on:
     tags: true
     repo: bsycorp/make-jks
