@@ -16,17 +16,6 @@ dependencies {
     implementation files("${org.gradle.internal.jvm.Jvm.current().javaHome}/jre/lib/rt.jar")
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java']
-        }
-        resources {
-            srcDirs = ['src/main/resources']
-        }
-    }
-}
-
 compileJava {
     options.warnings = false
     options.deprecation = false
