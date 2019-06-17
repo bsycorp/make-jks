@@ -34,6 +34,8 @@ public class Main {
             for (File pem : pemFiles){
                 try (StringReader reader = new StringReader(FileUtils.readFileToString(pem, "UTF-8")); PEMParser pemParser = new PEMParser(reader)) {
                     X509CertificateHolder x509Cert = ((X509CertificateHolder) pemParser.readObject());
+                    if(x509Cert == null) continue; //read object returns null for some parsing cases
+                    
                     //create temp file for der
                     File tempDerFile = File.createTempFile("cert", ".der");
                     tempDerFile.deleteOnExit();
