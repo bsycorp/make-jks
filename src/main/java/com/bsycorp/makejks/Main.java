@@ -34,19 +34,23 @@ public class Main {
             for (File pem : pemFiles){
                 try (StringReader reader = new StringReader(FileUtils.readFileToString(pem, "UTF-8")); PEMParser pemParser = new PEMParser(reader)) {
                     X509CertificateHolder x509Cert = ((X509CertificateHolder) pemParser.readObject());
-                    if(x509Cert == null) continue; //read object returns null for some parsing cases
-                    
-                    //create temp file for der
-                    File tempDerFile = File.createTempFile("cert", ".der");
-                    tempDerFile.deleteOnExit();
 
-                    //write der encoded cert to temp file
-                    FileUtils.writeByteArrayToFile(tempDerFile, x509Cert.getEncoded());
+                    while(x509Cert != null){
+                        //create temp file for der
+                        File tempDerFile = File.createTempFile("cert", ".der");
+                        tempDerFile.deleteOnExit();
 
-                    //call with single der file as arguments
-                    String[] newArgs = Stream.concat(Arrays.stream(arguments.getRegularArguments()), Arrays.stream(new String[] {"-alias", pem.getName(), "-noprompt", "-file", tempDerFile.getAbsolutePath()}))
-                            .toArray(String[]::new);
-                    sun.security.tools.keytool.Main.main(newArgs);
+                        //write der encoded cert to temp file
+                        FileUtils.writeByteArrayToFile(tempDerFile, x509Cert.getEncoded());
+
+                        //call with single der file as arguments
+                        String[] newArgs = Stream.concat(Arrays.stream(arguments.getRegularArguments()), Arrays.stream(new String[] {"-alias", pem.getName(), "-noprompt", "-file", tempDerFile.getAbsolutePath()}))
+                                .toArray(String[]::new);
+                        sun.security.tools.keytool.Main.main(newArgs);
+
+                        //find next pem if it exists
+                        x509Cert = ((X509CertificateHolder) pemParser.readObject());
+                    }
                 }
             }
 
