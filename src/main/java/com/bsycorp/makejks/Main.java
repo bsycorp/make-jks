@@ -35,7 +35,9 @@ public class Main {
                 try (StringReader reader = new StringReader(FileUtils.readFileToString(pem, "UTF-8")); PEMParser pemParser = new PEMParser(reader)) {
                     X509CertificateHolder x509Cert = ((X509CertificateHolder) pemParser.readObject());
 
+                    int index = 0;
                     while(x509Cert != null){
+                        index += 1;
                         //create temp file for der
                         File tempDerFile = File.createTempFile("cert", ".der");
                         tempDerFile.deleteOnExit();
@@ -44,7 +46,7 @@ public class Main {
                         FileUtils.writeByteArrayToFile(tempDerFile, x509Cert.getEncoded());
 
                         //call with single der file as arguments
-                        String[] newArgs = Stream.concat(Arrays.stream(arguments.getRegularArguments()), Arrays.stream(new String[] {"-alias", pem.getName(), "-noprompt", "-file", tempDerFile.getAbsolutePath()}))
+                        String[] newArgs = Stream.concat(Arrays.stream(arguments.getRegularArguments()), Arrays.stream(new String[] {"-alias", pem.getName() + index, "-noprompt", "-file", tempDerFile.getAbsolutePath()}))
                                 .toArray(String[]::new);
                         sun.security.tools.keytool.Main.main(newArgs);
 
